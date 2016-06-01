@@ -1,6 +1,6 @@
 from urllib import urlopen
 import re
-from socket import socket, AF_INET, SOCK_DGRAM
+from socket import socket, AF_INET, SOCK_DGRAM, timeout
 
 
 PATTERN_SERVER = re.compile("(\d+\\.\d+\\.\d+\\.\d+)\\:(\d+)")
@@ -27,6 +27,7 @@ class Server:
     """Server info"""
     def __init__(self, ip, port):
         conn = socket(AF_INET, SOCK_DGRAM)
+        conn.settimeout(2)
         conn.sendto("\xFF\xFF\xFF\xFFstatus\0", (ip, port))
         data = conn.recv(4096)
         data_spl = data.split("\n")
@@ -59,7 +60,10 @@ class ServerBrowser:
     def __load_servers(self):
         self.__servers = list()
         for server_addr in self.__server_addr_list:
-            self.__servers.append(Server(*server_addr))
+            try:
+                self.__servers.append(Server(*server_addr))
+            except timeout:
+                pass
 
     def __update_addr_list(self):
         """Update the list of server IPs"""
