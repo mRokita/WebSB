@@ -17,7 +17,7 @@ def get_show_args():
 
 @app.route("/api/v1/scans/")
 def get_scans():
-    scans = list(db.session.query(Scan).order_by(Scan.time).all())
+    scans = list(db.session.query(Scan).order_by(desc(Scan.time)).all())
     data = dict()
     data["scans"] = [{"time": str(scan.time),
                       "id": scan.id,
