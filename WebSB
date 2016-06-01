@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+from serverbrowser import Server, ServerBrowser, Player, Base, Scan
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from config import database_uri
+from time import sleep
+def main():
+    sb = ServerBrowser()
+    engine = create_engine(database_uri)
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    while True:
+        print "Updating..."
+        sb.update()
+        session.add(sb.get_scan())
+        session.commit()
+        print "Updated!"
+        sleep(10)
+if __name__ == "__main__":
+    main()
