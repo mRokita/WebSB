@@ -9,9 +9,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 db = SQLAlchemy(app)
 
+
 def get_show_args():
     return "show_variables" in request.args and request.args["show_variables"] == "1",\
            "show_players" in request.args and request.args["show_players"] == "1"
+
 
 @app.route("/api/v1/scans/")
 def get_scans():
@@ -22,6 +24,37 @@ def get_scans():
                       "server_count": len(scan.servers),
                       "player_count": sum(server.players_count for server in scan.servers)} for scan in scans]
     return Response(dumps(data, indent=4), mimetype="text/json")
+
+
+@app.route("/api/v1/servers/")
+def get_servers():
+    servers = list(db.session.query(Server).order_by(desc(Server.scan_id)).group_by(Server.ip, Server.port).all())
+    data = dict()
+    data["servers"] = list()
+    for server in servers:
+        sinfo = server.to_dict(show_players=False, show_variables=False)
+        del sinfo["player_count"]
+        del sinfo["maxclients"]
+        del sinfo["mapname"]
+        sinfo["last_scan_time"] = str(server.scan.time)
+        sinfo["last_scan_id"] = server.scan.id
+        data["servers"].append(sinfo)
+    return Response(dumps(data, indent=4), mimetype="text/json")
+
+
+@app.route("/api/v1/servers/<ip>:<port>")
+def get_server_scans(ip, port):
+    show_variables, show_players = get_show_args()
+    servers = list(db.session.query(Server).filter(and_(Server.port == port, Server.ip == ip)).order_by(desc(Server.scan_id)).all())
+    data = dict()
+    data["servers"] = list()
+    for server in servers:
+        sinfo = server.to_dict(show_players=show_players, show_variables=show_variables)
+        sinfo["scan_time"] = str(server.scan.time)
+        sinfo["scan_id"] = server.scan.id
+        data["servers"].append(sinfo)
+    return Response(dumps(data, indent=4), mimetype="text/json")
+
 
 @app.route("/api/v1/scans/<id>/")
 def get_scan(id):
@@ -36,6 +69,7 @@ def get_scan(id):
     for server in sorted(servers, key=lambda s: -s.players_count):
         data["servers"].append(server.to_dict(show_players=show_players, show_variables=show_variables))
     return Response(dumps(data, indent=4), mimetype="text/json")
+
 
 @app.route("/api/v1/scans/<id>/<ip>:<port>")
 def get_server(id, ip, port):
