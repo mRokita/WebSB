@@ -2,7 +2,7 @@
 from websb.serverbrowser import Server, ServerBrowser, Player, Base, Scan
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from websb.config import database_uri
+from websb.config import database_uri, delay
 from time import sleep
 def main():
     sb = ServerBrowser()
@@ -16,6 +16,6 @@ def main():
         session.add(sb.get_scan())
         session.commit()
         print "Updated!"
-        sleep(10)
+        sleep(delay)
 if __name__ == "__main__":
     main()

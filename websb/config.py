@@ -20,3 +20,4 @@ if not config_path:
 
 database_uri = conf.get("Database", "uri")
 timeout = float(conf.get("Connection", "timeout"))
+delay = float(conf.get("Updating", "delay"))
