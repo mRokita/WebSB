@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import reconstructor, relationship
 from datetime import datetime
-from json import dumps
+import config
 Base = declarative_base()
 
 PATTERN_SERVER = re.compile("(\d+\\.\d+\\.\d+\\.\d+):(\d+)")
@@ -66,12 +66,14 @@ class Player(Base):
     def __repr__(self):
         return "<Player({}, {}, {})>".format(self.score, self.ping, self.name)
 
+
 class Variable(Base):
     __tablename__ = "variable"
     id = Column(Integer, autoincrement=True, primary_key=True)
     variable = Column(String(128))
     value = Column(String(128))
     server_id = Column(Integer, ForeignKey("server.id"))
+
 
 class Server(Base):
     """Server info"""
@@ -87,12 +89,13 @@ class Server(Base):
     players_count = Column(Integer)
     scan_id = Column(Integer, ForeignKey("scan.id"))
     scan = relationship("Scan", foreign_keys = [scan_id])
+
     def __init__(self, ip, port):
         """Download server's status and init object."""
         self.port = port
         self.ip = ip
         conn = socket(AF_INET, SOCK_DGRAM)
-        conn.settimeout(3)
+        conn.settimeout(config.timeout)
         conn.sendto("\xFF\xFF\xFF\xFFstatus\0", (ip, port))
         data = conn.recv(4096)
         data_spl = data.split("\n")
@@ -137,14 +140,17 @@ class Server(Base):
     def __repr__(self):
         return "<Server ({}, {}:{}, {})>".format(self.get_variable("hostname").value, self.ip, self.port, len(self.players))
 
+
 class Scan(Base):
     __tablename__ = "scan"
     id = Column(Integer, autoincrement=True, primary_key=True)
     time = Column(DateTime, primary_key=True)
     servers = relationship("Server")
+
     def __init__(self, servers):
         self.time = datetime.now()
         self.servers = servers
+
 
 class ServerBrowser:
     """This class is a container of server info."""
