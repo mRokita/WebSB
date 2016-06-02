@@ -14,7 +14,8 @@ setup(name="WebSB",
       scripts=["webserverbrowser"],
       package_data={
             "websb" : [
-                  "templates/*"
+                  "templates/*",
+                  "static/*"
             ]
       },
       requires=["sqlalchemy", "flask", "flask_sqlalchemy"],
