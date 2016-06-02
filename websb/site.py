@@ -66,7 +66,7 @@ def get_scan(id):
     servers = db.session.query(Server).filter(Server.scan_id == id).order_by(desc(Server.players_count)).all()
     data = dict()
     data["id"] = id
-    data["time"] = str(db.session.query(Scan).first().time)
+    data["time"] = str(db.session.query(Scan).filter(Scan.id == id).first().time)
     data["servers"] = []
     for server in sorted(servers, key=lambda s: -s.players_count):
         data["servers"].append(server.to_dict(show_players=show_players, show_variables=show_variables))
