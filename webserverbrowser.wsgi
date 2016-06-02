@@ -1,1 +1,1 @@
-from websb.site import app
+from websb.site import app as application
