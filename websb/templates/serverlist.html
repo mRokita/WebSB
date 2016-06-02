@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body %}
+{% raw %}
+<div>
+    <ul class="collapsible" data-collapsible="expandable">
+        <li data-ng-repeat="server in scan.servers">
+            <div class="collapsible-header">
+                {{server.hostname}}<span class="right">{{server.player_count}}/{{server.maxclients}}</span>
+            </div>
+            <div class="collapsible-body" style="padding:0px;margin:0px;padding-left:10px;">
+                <div class="row">
+                    <div class="col sm-4 sz" style="height:300px;overflow-y:scroll;">
+                    <table>
+                        <tr data-ng-repeat="variable in server.variables"><th style="padding:0px;margin:0px;">{{variable.variable}}</th><td style="padding:0px;margin:0px;padding-left:4px;">{{variable.value}}</td></tr>
+                    </table>
+                    </div>
+                    <div class="col sm-4">
+                        <img data-ng-style="rowStyle" data-ng-src="https://dp.mrokita.pl/files/mapshots/{{server.mapname}}.jpg"/>
+                    </div>
+                    <div class="col sm-4">{{rowStyle}}</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endraw %}
+<script type="text/javascript">
+    var rowWidth;
+    var rowStyle = {};
+    $(document).ready(function(){
+        $(".collapsible").collapsible({
+            accordion: false
+        });
+        rowWidth = $(".collapsible").width();
+        console.log("rw"+rowWidth);
+        rowStyle = {'max-width': rowWidth/3};
+    });
+</script>
+{% endblock %}
