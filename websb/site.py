@@ -1,20 +1,29 @@
-from flask import Flask, Response, request
+from flask import Flask, Response, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, and_
 from sqlalchemy.sql.expression import func
 from serverbrowser import Scan, Server, Player, Variable, Base
-from config import database_uri
+import config
 from json import dumps
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = config.database_uri
 db = SQLAlchemy(app)
+
+
+def render_template_with_args(file, **kwargs):
+    return render_template(file, config=config, **kwargs)
 
 
 def get_show_args():
     return "show_variables" in request.args and request.args["show_variables"] == "1",\
            "show_players" in request.args and request.args["show_players"] == "1"
+
+
+@app.route("/")
+def index():
+    return render_template("base.html")
 
 
 @app.route("/api/v1/scans/")
