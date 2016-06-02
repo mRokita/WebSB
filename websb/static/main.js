@@ -1,4 +1,10 @@
-var app = angular.module("sb", []);
+var app = angular.module("sb", []).filter('mapshotname', function() {
+        return function(input) {
+            // do some bounds checking here to ensure it has that index
+            var a = input.split("/");
+            return a.length>1 ? a[1] : a[0];
+        }
+    });
 app.controller("serverList", function($scope, $http){
     $http.get("/api/v1/scans/latest/?show_variables=1&show_players=1").success(function(response){
         var rowWidth;
