@@ -19,4 +19,4 @@ if not config_path:
     raise ConfigNotFound("Couldn't find any config in ./sb.ini and /etc/websb/sb.ini")
 
 database_uri = conf.get("Database", "uri")
-timeout = conf.get("Connection", "timeout")
+timeout = float(conf.get("Connection", "timeout"))
