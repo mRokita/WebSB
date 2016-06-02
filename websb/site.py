@@ -23,7 +23,7 @@ def get_show_args():
 
 @app.route("/")
 def index():
-    return render_template("base.html")
+    return render_template_with_args("base.html")
 
 
 @app.route("/api/v1/scans/")
