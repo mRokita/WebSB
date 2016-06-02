@@ -1,39 +1,88 @@
 {% extends "base.html" %}
 {% block body %}
 {% raw %}
-<div>
+<div class="container">
     <ul class="collapsible" data-collapsible="expandable">
         <li data-ng-repeat="server in scan.servers">
-            <div class="collapsible-header">
+            <div class="collapsible-header indigo darken-4 white-text">
                 {{server.hostname}}<span class="right">{{server.player_count}}/{{server.maxclients}}</span>
             </div>
-            <div class="collapsible-body" style="padding:0px;margin:0px;padding-left:10px;">
-                <div class="row">
-                    <div class="col sm-4 sz" style="height:300px;overflow-y:scroll;">
-                    <table>
-                        <tr data-ng-repeat="variable in server.variables"><th style="padding:0px;margin:0px;">{{variable.variable}}</th><td style="padding:0px;margin:0px;padding-left:4px;">{{variable.value}}</td></tr>
+            <div class="collapsible-body indigo white-text" style="padding:0px;margin:0px;padding-top:14px;padding-left:10px;padding-right:10px;">
+                <div class="row hide-on-small-only">
+                    <div class="col col-sm-4" style="width:33%;height:300px;overflow-y:auto;overflow-x:hidden">
+                    <table class="white-text bordered">
+                        <tr data-ng-repeat="variable in server.variables">
+                            <th style="padding:0px;margin:0px;padding-left:5px;">{{variable.variable}}</th>
+                            <td style="padding:0px;margin:0px;padding-left:4px;">{{variable.value}}</td></tr>
                     </table>
                     </div>
-                    <div class="col sm-4">
-                        <img data-ng-style="rowStyle" data-ng-src="https://dp.mrokita.pl/files/mapshots/{{server.mapname}}.jpg"/>
+                    <div class="col col-sm-4 valign-wrapper" style="width:33%;height:300px;">
+                        <img class="valign" style="width:100%;" data-ng-src="https://dp.mrokita.pl/files/mapshots/{{server.mapname}}.jpg"/>
                     </div>
-                    <div class="col sm-4">{{rowStyle}}</div>
+                    <div class="col col-sm-4" style="width:33%;height:300px;overflow-y:auto;">
+                    <table class="bordered">
+                        <tr>
+                            <th style="padding:0px;margin:0px;"></th>
+                            <th style="padding:0px;margin:0px;">Name</th>
+                            <th style="padding:0px;margin:0px;text-align:center;">Scr</th>
+                            <th style="padding:0px;margin:0px;text-align:center;">Png</th>
+                        </tr>
+                        <tr data-ng-repeat="player in server.players">
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='red'" class="red-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='blue'" class="blue-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='purple'" class="purple-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='yellow'" class="yellow-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='observer'" class="white-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='connecting'" class="black-text">]]]</td>
+                            <th style="padding:0px;margin:0px;">{{player.name}}</th>
+                            <td style="padding:0px;margin:0px;text-align:center;">{{player.score}}</td>
+                            <td style="padding:0px;margin:0px;text-align:center;">{{player.ping}}</td>
+                        </tr>
+                    </table>
+                    </div>
                 </div>
+                <div class="row hide-on-med-and-up">
+                    <div class="col col-sm-12" style="width:100%;">
+                    <table class="white-text bordered">
+                        <tr data-ng-repeat="variable in server.variables">
+                            <th style="padding:0px;margin:0px;padding-left:5px;">{{variable.variable}}</th>
+                            <td style="padding:0px;margin:0px;padding-left:4px;">{{variable.value}}</td></tr>
+                    </table>
+                    </div>
+                    <div class="col col-sm-12" style="width:100%;padding-top:14px;">
+                        <img style="width:100%;height:300px;" src="" data-ng-src="https://dp.mrokita.pl/files/mapshots/{{server.mapname}}.jpg"/>
+                    </div>
+                    <div class="col col-sm-12" style="width:100%;">
+                    <table class="bordered">
+                        <tr>
+                            <th style="padding:0px;margin:0px;"></th>
+                            <th style="padding:0px;margin:0px;">Name</th>
+                            <th style="padding:0px;margin:0px;text-align:center;">Scr</th>
+                            <th style="padding:0px;margin:0px;text-align:center;">Png</th>
+                        </tr>
+                        <tr data-ng-repeat="player in server.players">
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='red'" class="red-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='blue'" class="blue-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='purple'" class="purple-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='yellow'" class="yellow-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='observer'" class="white-text">]]]</td>
+                            <td style="max-width:10px;padding:0px;margin:0px;" data-ng-if="player.team=='connecting'" class="black-text">]]]</td>
+                            <th style="padding:0px;margin:0px;">{{player.name}}</th>
+                            <td style="padding:0px;margin:0px;text-align:center;">{{player.score}}</td>
+                            <td style="padding:0px;margin:0px;text-align:center;">{{player.ping}}</td>
+                        </tr>
+                    </table>
+                    </div>
             </div>
         </li>
     </ul>
 </div>
 {% endraw %}
 <script type="text/javascript">
-    var rowWidth;
-    var rowStyle = {};
     $(document).ready(function(){
         $(".collapsible").collapsible({
             accordion: false
         });
-        rowWidth = $(".collapsible").width();
-        console.log("rw"+rowWidth);
-        rowStyle = {'max-width': rowWidth/3};
     });
 </script>
 {% endblock %}
