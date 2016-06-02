@@ -1,2 +1,4 @@
 .idea
+websb/*.pyc
 *.pyc
+sb.ini

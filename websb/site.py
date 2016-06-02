@@ -5,6 +5,8 @@ from sqlalchemy.sql.expression import func
 from serverbrowser import Scan, Server, Player, Variable, Base
 from config import database_uri
 from json import dumps
+
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 db = SQLAlchemy(app)

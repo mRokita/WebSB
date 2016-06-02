@@ -1,1 +1,0 @@
-database_uri = "mysql://root:1324@localhost/sb"
