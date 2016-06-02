@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
+from subprocess import call
+
+call(["chmod", "+x", "websbd", "-v"])
 
 setup(name="WebSB",
       version="1.0",
@@ -11,5 +14,6 @@ setup(name="WebSB",
       scripts=["webserverbrowser"],
       requires=["sqlalchemy", "flask", "flask_sqlalchemy"],
       data_files=[('/etc/websb/', ['sb.default.ini']),
-                 ('/usr/share/websb/', ['webserverbrowser.wsgi'])]
+                  ('/usr/share/websb/', ['webserverbrowser.wsgi']),
+                  ('/etc/init.d/', ['websbd'])]
       )
