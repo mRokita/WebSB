@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block body %}
 {% raw %}
-<div class="container" xmlns:https="http://www.w3.org/1999/xhtml">
+<div class="container">
     <ul class="collapsible" data-collapsible="expandable">
         <li data-ng-repeat="server in scan.servers">
             <div class="collapsible-header indigo darken-4 white-text">
-                {{server.hostname}}<span class="right">{{server.mapname}}&nbsp;&nbsp;&nbsp;&nbsp;{{server.player_count}}/{{server.maxclients}}</span>
+                {{server.hostname}}<span class="right"><span class="hide-on-small-only">{{server.mapname}}&nbsp;&nbsp;&nbsp;&nbsp;</span>{{server.player_count}}/{{server.maxclients}}</span>
             </div>
             <div class="collapsible-body indigo white-text" style="padding:0px;margin:0px;padding-top:14px;padding-left:10px;padding-right:10px;">
                 <div class="row hide-on-small-only">
