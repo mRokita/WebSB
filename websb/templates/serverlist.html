@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 {% raw %}
-<div class="container">
+<div class="container" xmlns:https="http://www.w3.org/1999/xhtml">
     <ul class="collapsible" data-collapsible="expandable">
         <li data-ng-repeat="server in scan.servers">
             <div class="collapsible-header indigo darken-4 white-text">
@@ -9,15 +9,18 @@
             </div>
             <div class="collapsible-body indigo white-text" style="padding:0px;margin:0px;padding-top:14px;padding-left:10px;padding-right:10px;">
                 <div class="row hide-on-small-only">
-                    <div class="col col-sm-4" style="width:33%;height:300px;overflow-y:auto;overflow-x:hidden">
-                    <table class="white-text bordered">
-                        <tr data-ng-repeat="variable in server.variables">
-                            <th style="padding:0px;margin:0px;padding-left:5px;">{{variable.variable}}</th>
-                            <td style="padding:0px;margin:0px;padding-left:4px;">{{variable.value}}</td></tr>
-                    </table>
+                    <div class="col col-sm-4" style="width:33%;height:300px;overflow-y:auto;overflow-x:none;">
+                        <table class="white-text bordered" style="width:100%;overflow-x:none">
+                            <tr data-ng-repeat="variable in server.variables" style="width:90%;">
+                                <td style="padding:0px;margin:0px;"><b>{{variable.variable}}:</b>&nbsp;{{variable.value}}</td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="col col-sm-4 valign-wrapper" style="width:33%;height:300px;">
-                        <img class="valign" style="width:100%;" data-ng-src="https://dp.mrokita.pl/files/mapshots/{{server.mapname | mapshotname}}.jpg"/>
+                        <div class="valign">
+                            <img style="width:100%;" data-ng-src="https://dp.mrokita.pl/files/mapshots/{{server.mapname | mapshotname}}.jpg"/>
+                            <a class="white-text valign" style="width:100%;text-size:30px;text-decoration:underline;text-align:center;" href="" data-ng-href="https://dp.mrokita.pl/files/maps/{{server.mapname}}.bsp">{{server.mapname}}</a>
+                        </div>
                     </div>
                     <div class="col col-sm-4" style="width:33%;height:300px;overflow-y:auto;">
                     <table class="bordered">
