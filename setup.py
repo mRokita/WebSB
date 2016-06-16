@@ -12,6 +12,12 @@ setup(name="WebSB",
       author_email="mrokita+sb@mrokita.pl",
       packages=["websb"],
       scripts=["webserverbrowser"],
+      package_data={
+            "websb" : [
+                  "templates/*",
+                  "static/*"
+            ]
+      },
       requires=["sqlalchemy", "flask", "flask_sqlalchemy"],
       data_files=[('/etc/websb/', ['sb.default.ini']),
                   ('/usr/share/websb/', ['webserverbrowser.wsgi']),

@@ -11,6 +11,7 @@ Base = declarative_base()
 PATTERN_SERVER = re.compile("(\d+\\.\d+\\.\d+\\.\d+):(\d+)")
 PATTERN_VAR = re.compile("\\\\([^\\\\]+)\\\\([^\\\\]+)")
 PATTERN_PLAYER = re.compile("(\d+) (\d+) \\\"(.*?)\\\"")
+PATTERN_PCOLOR = re.compile("\\!(\d+)")
 
 ESCAPE_TAB = ['\0', '-', '-', '-', '_', '*', 't', '.', 'N', '-', '\n', '#', '.', '>', '*', '*',
               '[', ']', '@', '@', '@', '@', '@', '@', '<', '>', '.', '-', '*', '-', '-', '-',
@@ -128,8 +129,19 @@ class Server(Base):
                 sinfo["variables"].append({"variable": var.variable,
                                            "value": var.value})
         if show_players:
-            sinfo["players"] = [{"score": player.score, "ping": player.ping, "name": player.name}
-                                for player in self.players]
+            var_to_color = {"po": "observer", "pr": "red", "pb": "blue", "pp": "purple", "py": "yellow"}
+            teams = {}
+            for cl in ["po", "pr", "py", "pb", "pp"]:
+                v = self.get_variable(cl)
+                if v:
+                    pl = PATTERN_PCOLOR.findall(v.value)
+                    for id in pl:
+                        teams[int(id)] = var_to_color[cl]
+            sinfo["players"] = [{"score": self.players[pnum].score,
+                                 "ping": self.players[pnum].ping,
+                                 "name": self.players[pnum].name,
+                                 "team": teams[pnum] if pnum in teams else "connecting"}
+                                 for pnum in range(len(self.players))]
         return sinfo
 
     def get_variable(self, name):
